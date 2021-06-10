@@ -4,7 +4,7 @@
         v-for="item in defaultGruops"
         :key="item.title"
         :header="item.title">
-      <a-row class="category__wrapper" align="middle" justify="space-between">
+      <a-row class="category__wrapper" align="middle">
         <a-col
             v-for="component in item.components"
             class="category__item"
@@ -60,10 +60,10 @@ export default defineComponent({
             iconTitle: '标题',
             componentMap: 'j-title',
           },
-          {
+          /*{
             icon: 'AppstoreOutlined',
             iconTitle: '图文导航'
-          },
+          },*/
         ]
       },
       {
@@ -76,15 +76,15 @@ export default defineComponent({
           }
         ]
       },
-      {
-        title: '活动类',
-        components: [
-          {
-            icon: 'UsergroupAddOutlined',
-            iconTitle: '团购'
-          }
-        ]
-      },
+      // {
+      //   title: '活动类',
+      //   components: [
+      //     {
+      //       icon: 'UsergroupAddOutlined',
+      //       iconTitle: '团购'
+      //     }
+      //   ]
+      // },
       {
         title: '辅助类',
         components: [
