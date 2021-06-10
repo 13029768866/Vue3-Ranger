@@ -7,25 +7,52 @@
       <!--  画布区域  -->
       <div class="preview__container">
         <div class="preview--list">
-          <preview-comp-wrapper
-              v-for="component in components"
-              :key="component.moduleId"
-              :id="component.moduleId"
-              draggable="true"
-              :active="currentElement && component.moduleId === currentElement.moduleId"
-              :current="component"
-              @currentComponent="setCurrentElement(component.moduleId)"
-              @deleteComponent="deleteComponent(component.moduleId)"
+          <draggable
+              tag="transition-group"
+              :component-data="{
+                tag: 'div',
+                type: 'transition-group',
+                name: !drag ? 'flip-list' : null
+              }"
+              v-model="components"
+              v-bind="dragOptions"
+              @start="drag = true"
+              @end="drag = false"
+              item-key="moduleId"
           >
-            <component
-                :is="component.moduleSign"
-                :moduleJson="component['moduleJson']"
-                v-bind="component['moduleJson']['styleProps'][component['moduleJson']['type']]"
-            ></component>
-          </preview-comp-wrapper>
-<!--          <Home1></Home1>-->
+            <template #item="{ element, index }">
+              <preview-comp-wrapper
+                  :key="element.moduleId"
+                  :id="element.moduleId"
+                  :active="currentElement && element.moduleId === currentElement.moduleId"
+                  :current="element"
+                  @currentComponent="setCurrentElement(element.moduleId)"
+                  @deleteComponent="deleteComponent(element.moduleId)"
+              >
+                <component
+                    :is="element.moduleSign"
+                    :moduleJson="element['moduleJson']"
+                    v-bind="element['moduleJson']['styleProps'][element['moduleJson']['type']]"
+                ></component>
+              </preview-comp-wrapper>
+            </template>
+          </draggable>
+<!--          <preview-comp-wrapper-->
+<!--              v-for="component in components"-->
+<!--              :key="component.moduleId"-->
+<!--              :id="component.moduleId"-->
+<!--              :active="currentElement && component.moduleId === currentElement.moduleId"-->
+<!--              :current="component"-->
+<!--              @currentComponent="setCurrentElement(component.moduleId)"-->
+<!--              @deleteComponent="deleteComponent(component.moduleId)"-->
+<!--          >-->
+<!--            <component-->
+<!--                :is="component.moduleSign"-->
+<!--                :moduleJson="component['moduleJson']"-->
+<!--                v-bind="component['moduleJson']['styleProps'][component['moduleJson']['type']]"-->
+<!--            ></component>-->
+<!--          </preview-comp-wrapper>-->
         </div>
-<!--        <pre>{{components}}</pre>-->
       </div>
       <!--  属性列表  -->
       <div  class="comp__props--wrapper">
@@ -70,6 +97,8 @@
 <script>
 import { defineComponent, onMounted ,computed, ref } from "vue";
 import { useStore } from "vuex";
+import draggable from "vuedraggable";
+
 import { mapComponentTemplateData } from "@/maps/mapComponentTemplateData";
 
 // 左侧物料
@@ -182,6 +211,7 @@ const testComponent = [
 
 export default defineComponent({
   components: {
+    draggable,
     LeftCompList,
     PreviewCompWrapper,
     JEmpty,
@@ -206,10 +236,18 @@ export default defineComponent({
           },
           set(value) {
             console.log(value);
-            // this.$store.commit('updateList', value)
+            store.commit('updateList', value)
           }
         }
     );
+    /* 拖拽相关 */
+    const dragOptions = {
+      animation: 200,
+      group: "description",
+      disabled: false,
+      ghostClass: "ghost"
+    };
+    const drag = ref(false)
     /* 当前选中组件 */
     const currentElement = computed(() => store.getters.getCurrentElement);
     const currentType = computed(() => store.getters.getCurrentElementType);
@@ -249,13 +287,8 @@ export default defineComponent({
       setEditorData()
     })
 
-    const  list = [
-      { name: "wzj", id: 0 },
-      { name: "wzj1", id: 1 },
-      { name: "wzj2", id: 2 }
-    ]
+
     return {
-      list,
       components,
       currentType,
       currentElement,
@@ -267,6 +300,9 @@ export default defineComponent({
       handleChange,
       handleContentChange,
       changeType,
+
+      drag,
+      dragOptions
     };
   },
 });
@@ -276,7 +312,6 @@ export default defineComponent({
 .editor__wrapper {
   display: flex;
   justify-content: space-between;
-  border: 1px solid #000;
   .comp__list--wrapper {
     width: 310px;
     background-color: #f8f9fa;

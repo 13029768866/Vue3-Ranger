@@ -122,7 +122,7 @@ export default defineComponent({
       top: 0;
       box-sizing: border-box;
       border: 2px solid skyblue;
-      //box-shadow: 0 2px 50px 5px rgb(50 59 77 / 50%);
+      box-shadow: 0 1px 25px 2px rgb(50 59 77 / 50%);
       cursor: pointer;
     }
   }

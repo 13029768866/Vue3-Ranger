@@ -41,6 +41,10 @@ const editor = {
     setCurrentElement(state, id) {
       state.currentElement = id;
     },
+    /* 拖拽画布组件 */
+    updateList(state, val){
+      state.components = val
+    },
     /* 删除画布组件 */
     deleteComponent(state, id){
        let deleteIdx = "";

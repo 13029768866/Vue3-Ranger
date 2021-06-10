@@ -111,7 +111,6 @@ export default defineComponent({
       })
       console.log(sortArr);
       let max = sortArr.sort((a,b) => b - a)[0]
-      console.log(max);
       personalData.value.items.push({
         content: '',
         order: max + 1
