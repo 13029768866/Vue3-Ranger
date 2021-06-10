@@ -12,6 +12,7 @@
     "uuid": "^8.3.2",
     "vant": "^3.0.18",
     "vue": "^3.0.5",
+    "vuedraggable": "^4.0.1",
     "vuex": "^4.0.1"
   },
   "devDependencies": {
