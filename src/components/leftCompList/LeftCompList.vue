@@ -98,7 +98,7 @@ export default defineComponent({
 
     ])
     // 当前展开项
-    const activeKey = ref(['图文类','商品类','活动类','辅助类']);
+    const activeKey = ref(['图文类','商品类','辅助类']);
     // 当前点击组件
     const handleItemClick = (props) => {
       const component = cloneDeep(mapComponentTemplateData[props.componentMap]['template'])
